@@ -126,7 +126,7 @@ function verSeccion(tipo) {
         `;
     }
     else {
-        caja.innerHTML = `<h2>Bienvenido</h2><p>Selecciona una categoría para empezar a organizar tu vida gamer.</p>`;
+        caja.innerHTML = `<h2>Bienvenido</h2><p>Selecciona una categoría para empezar a organizar tu vida.</p>`;
     }
 }
 
