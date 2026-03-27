@@ -110,36 +110,30 @@ function verSeccion(tipo) {
         caja.innerHTML = `
             <h2>🎮 Mi Biblioteca de Juegos</h2>
             
-            <table class="tabla-juegos" style="margin-top: 20px;">
+            <table class="tabla-juegos" style="margin-top: 20px; width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr style="background-color: #21262d;">
-                        <th style="width: 40%; padding: 5px;">
-                            <input type="text" id="nuevoJuego" placeholder="Nombre del juego..." 
-                                style="margin: 0; border: none; background: transparent; padding: 10px; width: 100%;">
+                        <th style="width: 35%; padding: 5px;">
+                            <input type="text" id="nuevoJuego" placeholder="Juego..." style="margin: 0; border: none; background: transparent; padding: 10px; width: 100%; color: white;">
                         </th>
-                        <th style="width: 40%; border-left: 1px solid #30363d; padding: 5px;">
-                            <input type="text" id="espacioLibre" placeholder="Escribe lo que quieras..." 
-                                style="margin: 0; border: none; background: transparent; padding: 10px; width: 100%;">
+                        <th style="width: 45%; border-left: 1px solid #30363d; padding: 5px;">
+                            <input type="text" id="espacioLibre" placeholder="Notas / Ideas..." style="margin: 0; border: none; background: transparent; padding: 10px; width: 100%; color: white;">
                         </th>
                         <th style="width: 20%; border-left: 1px solid #30363d; text-align: center;">
-                            <button onclick="añadirJuego()" class="btn-glow" 
-                                style="margin: 0; width: 90%; padding: 8px; font-size: 12px;">Añadir</button>
+                            <button onclick="añadirJuego()" class="btn-glow" style="margin: 0; width: 90%; padding: 8px; font-size: 12px;">Añadir</button>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     ${juegosActuales.map((j, i) => `
                         <tr class="${j.completado ? 'fila-completada' : ''}">
-                            <td style="padding: 15px;"><strong>${j.nombre}</strong></td>
-                            <td style="border-left: 1px solid #30363d; color: #8b949e; padding: 15px;">
+                            <td style="padding: 15px; border-bottom: 1px solid #30363d;"><strong>${j.nombre}</strong></td>
+                            <td style="border-left: 1px solid #30363d; border-bottom: 1px solid #30363d; color: #8b949e; padding: 15px;">
                                 ${j.extra || ''}
                             </td>
-                            <td style="border-left: 1px solid #30363d; text-align: center;">
-                                <input type="checkbox" class="check-completado" 
-                                ${j.completado ? 'checked' : ''} 
-                                onchange="toggleJuego(${i})">
-                                <button onclick="borrarJuego(${i})" 
-                                    style="background:none; border:none; color:#f85149; cursor:pointer; margin-left: 10px;">✖</button>
+                            <td style="border-left: 1px solid #30363d; border-bottom: 1px solid #30363d; text-align: center; padding: 10px;">
+                                <input type="checkbox" class="check-completado" ${j.completado ? 'checked' : ''} onchange="toggleJuego(${i})">
+                                <button onclick="borrarJuego(${i})" style="background:none; border:none; color:#f85149; cursor:pointer; margin-left: 10px; font-weight: bold;">✖</button>
                             </td>
                         </tr>
                     `).join('')}
@@ -150,10 +144,10 @@ function verSeccion(tipo) {
     else {
         caja.innerHTML = `
             <h2>Panel de Control</h2>
-            <p>Selecciona una categoría para empezar a organizar tu vida.</p>
+            <p>Selecciona una categoría para empezar a organizar tu vida gamer.</p>
         `;
     }
-} // <--- ESTA LLAVE FALTABA AQUÍ
+} // <--- LLAVE DE CIERRE DE VERSECCION (IMPORTANTE)
 
 // --- 6. FUNCIONES DE ACCIÓN ---
 function añadirTarea() {
