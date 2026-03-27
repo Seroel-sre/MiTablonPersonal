@@ -92,11 +92,21 @@ input {
     flex-direction: column;
 }
 
-.header-dashboard {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+/* boton cerrar sesion */
+.header-dashboard button {
+    background-color: #f85149; 
+    color: white;
+    border: 1px solid rgba(248, 81, 73, 0.4);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.header-dashboard button:hover {
+    background-color: #da3633; 
+    box-shadow: 0 0 10px rgba(218, 54, 51, 0.4);
 }
 
 #nombreUsuarioCargado {
@@ -152,4 +162,19 @@ input {
 .fila-completada {
     opacity: 0.5;
     text-decoration: line-through;
+}
+
+.seccion-vacia {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 200px;
+    text-align: center;
+}
+
+.seccion-vacia p {
+    color: #8b949e;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
