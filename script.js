@@ -1,7 +1,6 @@
 // --- 1. CONFIGURACIÓN INICIAL Y VARIABLES ---
 let modoRegistro = false;
 
-// Al cargar la página, comprobamos si ya había un usuario logueado
 window.onload = function() {
     let usuarioGuardado = localStorage.getItem("usuarioActual");
     if (usuarioGuardado) {
@@ -51,8 +50,8 @@ function acceder() {
     } else {
         let usuarioEncontrado = usuarios.find(u => u.nombre === userNombre && u.pass === userPass);
         if (usuarioEncontrado) {
-            localStorage.setItem("usuarioActual", userNombre); // Guardado permanente
-            location.reload(); // Recargamos para que window.onload haga su magia
+            localStorage.setItem("usuarioActual", userNombre);
+            location.reload();
         } else {
             mensaje.textContent = "Usuario o contraseña incorrectos.";
         }
@@ -64,7 +63,7 @@ function cerrarSesion() {
     location.reload();
 }
 
-// --- 4. MOTOR DE PERSISTENCIA (EL CORAZÓN DEL AUTOGUARDADO) ---
+// --- 4. MOTOR DE PERSISTENCIA ---
 function guardarEnDisco(seccion, datos) {
     let usuarioActual = localStorage.getItem("usuarioActual");
     if (!usuarioActual) return;
@@ -90,50 +89,44 @@ function verSeccion(tipo) {
     let caja = document.getElementById("contenidoSeccion");
     
     if (tipo === 'tareas') {
-        let tareasActuales = cargarDeDisco('tareas');
+        let tareas = cargarDeDisco('tareas');
         caja.innerHTML = `
             <h2>✅ Mis Tareas</h2>
-            <div style="margin: 15px 0; display: flex; gap: 10px;">
-                <input type="text" id="nuevaTarea" placeholder="¿Qué hay que hacer?" style="flex-grow: 1; padding:10px;">
-                <button onclick="añadirTarea()" class="btn-glow" style="width: 100px; margin: 0;">Añadir</button>
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <input type="text" id="nuevaTarea" placeholder="¿Qué hay que hacer?" style="flex:1;">
+                <button onclick="añadirTarea()" class="btn-glow" style="width:100px; margin:0;">Añadir</button>
             </div>
-            <ul id="listaTareas" style="list-style: none; padding: 0;">
-                ${tareasActuales.map((t, i) => `
-                    <li style="background: #21262d; margin: 5px 0; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; border: 1px solid #30363d;">
-                        ${t} <button onclick="borrarTarea(${i})" style="background:none; border:none; color:#f85149; cursor:pointer; font-weight:bold;">✖</button>
+            <ul style="list-style:none; padding:0;">
+                ${tareas.map((t, i) => `
+                    <li style="background:#21262d; padding:10px; margin-bottom:5px; border-radius:5px; display:flex; justify-content:space-between; border: 1px solid #30363d;">
+                        ${t} <button onclick="borrarTarea(${i})" style="color:#f85149; background:none; border:none; cursor:pointer;">✖</button>
                     </li>
                 `).join('')}
             </ul>
         `;
     } 
     else if (tipo === 'juegos') {
-        let juegosActuales = cargarDeDisco('juegos');
         caja.innerHTML = `
-            <h2>🎮 Mi Biblioteca</h2>
-            <div style="margin: 15px 0; display: flex; gap: 10px;">
-                <input type="text" id="nuevoJuego" placeholder="Nombre del juego..." style="flex-grow: 1; padding:10px;">
-                <button onclick="añadirJuego()" class="btn-glow" style="width: 100px; margin: 0;">Añadir</button>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px;">
-                ${juegosActuales.map((j, i) => `
-                    <div style="background: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #30363d; text-align: center; position: relative;">
-                        <span style="font-size: 30px;">🕹️</span>
-                        <p style="margin-top: 8px; font-size: 14px;">${j}</p>
-                        <button onclick="borrarJuego(${i})" style="position: absolute; top: 5px; right: 5px; background:none; border:none; color:#f85149; cursor:pointer;">✖</button>
-                    </div>
-                `).join('')}
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
+                <span style="font-size: 50px; margin-bottom: 20px;">🚧</span>
+                <h2 style="color: #58a6ff; margin-bottom: 10px;">Sección en Mantenimiento</h2>
+                <p style="color: #8b949e; font-size: 1.2rem;">La biblioteca de juegos estará disponible <strong>próximamente</strong>.</p>
+                <div style="margin-top: 20px; width: 50px; height: 2px; background: #58a6ff; border-radius: 10px; box-shadow: 0 0 10px #58a6ff;"></div>
             </div>
         `;
-    }
+    } 
     else {
-        caja.innerHTML = `<h2>Bienvenido</h2><p>Selecciona una categoría para empezar a organizar tu vida gamer.</p>`;
+        caja.innerHTML = `
+            <h2>Bienvenido</h2>
+            <p>Selecciona una sección en el menú superior para empezar a organizar tu Tablon.</p>
+        `;
     }
 }
 
-// --- 6. FUNCIONES DE ACCIÓN (TAREAS Y JUEGOS) ---
+// --- 6. FUNCIONES DE ACCIÓN ---
 function añadirTarea() {
     let input = document.getElementById("nuevaTarea");
-    if (input.value.trim() === "") return;
+    if (!input || input.value.trim() === "") return;
     let lista = cargarDeDisco('tareas');
     lista.push(input.value);
     guardarEnDisco('tareas', lista);
@@ -147,9 +140,10 @@ function borrarTarea(i) {
     verSeccion('tareas');
 }
 
+// Estas funciones se quedan "en espera" hasta que habilites de nuevo la sección
 function añadirJuego() {
     let input = document.getElementById("nuevoJuego");
-    if (input.value.trim() === "") return;
+    if (!input || input.value.trim() === "") return;
     let lista = cargarDeDisco('juegos');
     lista.push(input.value);
     guardarEnDisco('juegos', lista);

@@ -1,4 +1,3 @@
-/* --- CONFIGURACIÓN GENERAL --- */
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +12,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Evita que el cuerpo haga scroll si el contenedor ya es grande */
 }
 
 .contenedor-principal {
@@ -24,7 +22,6 @@ body {
     flex-direction: column;
 }
 
-/* --- TARJETAS Y LOGIN --- */
 .tarjeta {
     background-color: #161b22;
     border: 1px solid #30363d;
@@ -54,7 +51,6 @@ body {
     cursor: pointer;
     font-size: 16px;
     padding: 5px 10px;
-    transition: 0.2s;
 }
 
 .btn-tab.active {
@@ -70,14 +66,8 @@ input {
     border: 1px solid #30363d;
     border-radius: 6px;
     color: white;
-    outline: none;
 }
 
-input:focus {
-    border-color: #58a6ff;
-}
-
-/* --- BOTONES --- */
 .btn-glow {
     width: 100%;
     padding: 15px;
@@ -96,22 +86,6 @@ input:focus {
     box-shadow: 0 0 15px rgba(46, 160, 67, 0.4);
 }
 
-.btn-outline {
-    background: none;
-    border: 1px solid #f85149;
-    color: #f85149;
-    padding: 8px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-outline:hover {
-    background-color: #f85149;
-    color: white;
-}
-
-/* --- DASHBOARD --- */
 .dashboard {
     height: 100%;
     display: flex;
@@ -127,7 +101,6 @@ input:focus {
 
 #nombreUsuarioCargado {
     color: #58a6ff;
-    text-transform: capitalize;
 }
 
 .menu-cuadros {
@@ -144,7 +117,7 @@ input:focus {
     border-radius: 10px;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.2s;
 }
 
 .cuadro:hover {
@@ -154,8 +127,6 @@ input:focus {
 
 .cuadro span {
     font-size: 30px;
-    display: block;
-    margin-bottom: 10px;
 }
 
 .caja-visor {
@@ -164,46 +135,21 @@ input:focus {
     border: 1px solid #30363d;
     border-radius: 8px;
     padding: 20px;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
-
+/* Estilos de la tabla de juegos */
 .tabla-juegos {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-    background: #161b22;
-    border-radius: 8px;
-    overflow: hidden;
 }
 
 .tabla-juegos th, .tabla-juegos td {
-    padding: 12px;
-    text-align: left;
     border-bottom: 1px solid #30363d;
-}
-
-.tabla-juegos th {
-    background-color: #21262d;
-    color: #8b949e;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.check-completado {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: #2ea043; 
+    text-align: left;
 }
 
 .fila-completada {
-    opacity: 0.4;
+    opacity: 0.5;
     text-decoration: line-through;
-    background-color: #0d1117;
-}
-
-.tabla-juegos td small {
-    color: #8b949e;
 }
