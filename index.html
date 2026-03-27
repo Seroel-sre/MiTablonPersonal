@@ -15,48 +15,44 @@
                 <button class="btn-tab active" onclick="mostrarLogin()">Inicio de sesión</button>
                 <button class="btn-tab" onclick="mostrarRegistro()">Crear Cuenta</button>
             </div>
-
             <h2 id="tituloForm">Iniciar Sesión</h2>
-            
             <div class="campos">
                 <input type="text" id="usuario" placeholder="Nombre de usuario">
                 <input type="password" id="password" placeholder="Contraseña">
             </div>
-
             <button id="botonAccion" class="btn-glow" onclick="acceder()">Entrar</button>
-            <p id="mensaje" class="error"></p>
+            <p id="mensaje" style="color: #f85149; margin-top: 10px;"></p>
         </div>
-<div id="panel" class="tarjeta dashboard" style="display:none;">
-    <header class="header-dashboard">
-        <h1>Bienvenido, <span id="nombreUsuarioCargado"></span></h1>
-        <button class="btn-outline" onclick="cerrarSesion()">Cerrar Sesión</button>
-    </header>
 
-    <nav class="menu-cuadros">
-        <div class="cuadro" onclick="verSeccion('tareas')">
-            <span>✅</span>
-            <h3>Tareas</h3>
-        </div>
-        <div class="cuadro" onclick="verSeccion('juegos')">
-            <span>🎮</span>
-            <h3>Juegos</h3>
-        </div>
-        <div class="cuadro" onclick="verSeccion('notas')">
-            <span>📝</span>
-            <h3>Notas</h3>
-        </div>
-        <div class="cuadro" onclick="verSeccion('guardados')">
-            <span>💾</span>
-            <h3>Guardados</h3>
-        </div>
-    </nav>
+        <div id="panel" class="tarjeta dashboard" style="display:none;">
+            <header class="header-dashboard">
+                <h1>Bienvenido, <span id="nombreUsuarioCargado"></span></h1>
+                <button class="btn-outline" onclick="cerrarSesion()">Cerrar Sesión</button>
+            </header>
 
-    <div id="contenidoSeccion" class="caja-visor">
-        <p>Selecciona una categoría en el menú superior para gestionar tus datos.</p>
-    </div>
-</div>
-       
+            <nav class="menu-cuadros">
+                <div class="cuadro" onclick="verSeccion('tareas')">
+                    <span>✅</span>
+                    <h3>Tareas</h3>
+                </div>
+                <div class="cuadro" onclick="verSeccion('juegos')">
+                    <span>🎮</span>
+                    <h3>Juegos</h3>
+                </div>
+                <div class="cuadro" onclick="verSeccion('notas')">
+                    <span>📝</span>
+                    <h3>Notas</h3>
+                </div>
+                <div class="cuadro" onclick="verSeccion('guardados')">
+                    <span>💾</span>
+                    <h3>Guardados</h3>
+                </div>
+            </nav>
 
+            <div id="contenidoSeccion" class="caja-visor">
+                <p>Selecciona una categoría para empezar.</p>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
