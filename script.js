@@ -1,4 +1,4 @@
-
+// --- 1. CONFIGURACIÓN INICIAL Y VARIABLES ---
 let modoRegistro = false;
 
 window.onload = function() {
@@ -11,7 +11,7 @@ window.onload = function() {
     }
 };
 
-
+// --- 2. GESTIÓN DE INTERFAZ (LOGIN/REGISTRO) ---
 function mostrarLogin() {
     modoRegistro = false;
     document.getElementById("tituloForm").textContent = "Iniciar Sesión";
@@ -28,7 +28,7 @@ function mostrarRegistro() {
     document.querySelectorAll('.btn-tab')[1].classList.add('active');
 }
 
-
+// --- 3. LÓGICA DE ACCESO ---
 function acceder() {
     let userNombre = document.getElementById("usuario").value;
     let userPass = document.getElementById("password").value;
@@ -63,7 +63,7 @@ function cerrarSesion() {
     location.reload();
 }
 
-
+// --- 4. MOTOR DE PERSISTENCIA ---
 function guardarEnDisco(seccion, datos) {
     let usuarioActual = localStorage.getItem("usuarioActual");
     if (!usuarioActual) return;
@@ -73,7 +73,7 @@ function guardarEnDisco(seccion, datos) {
     };
 
     todosLosDatos[seccion] = datos;
-    localStorage.setItem("datos_" + usuarioActual, JSON.stringify(todosLosDatos));
+    localStorage.setItem("datos_" + usuarioActual, JSON.stringify(todosLos_Datos));
 }
 
 function cargarDeDisco(seccion) {
@@ -84,7 +84,7 @@ function cargarDeDisco(seccion) {
     return todosLosDatos[seccion] || [];
 }
 
-
+// --- 5. NAVEGACIÓN Y SECCIONES ---
 function verSeccion(tipo) {
     let caja = document.getElementById("contenidoSeccion");
     
@@ -108,20 +108,37 @@ function verSeccion(tipo) {
     else if (tipo === 'juegos') {
         let juegosActuales = cargarDeDisco('juegos');
         caja.innerHTML = `
-            <h2>🎮 Mi Biblioteca</h2>
-            <div style="margin: 15px 0; display: flex; gap: 10px;">
-                <input type="text" id="nuevoJuego" placeholder="Nombre del juego..." style="flex-grow: 1; padding:10px;">
-                <button onclick="añadirJuego()" class="btn-glow" style="width: 100px; margin: 0;">Añadir</button>
+            <h2>🎮 Mi Biblioteca de Juegos</h2>
+            
+            <div style="display: flex; gap: 10px; margin: 15px 0;">
+                <input type="text" id="nuevoJuego" placeholder="Nombre del juego..." style="flex-grow: 1; padding:10px; margin:0;">
+                <button onclick="añadirJuego()" class="btn-glow" style="width: 100px; margin: 0; padding: 10px;">Añadir</button>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px;">
-                ${juegosActuales.map((j, i) => `
-                    <div style="background: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #30363d; text-align: center; position: relative;">
-                        <span style="font-size: 30px;">🕹️</span>
-                        <p style="margin-top: 8px; font-size: 14px;">${j}</p>
-                        <button onclick="borrarJuego(${i})" style="position: absolute; top: 5px; right: 5px; background:none; border:none; color:#f85149; cursor:pointer;">✖</button>
-                    </div>
-                `).join('')}
-            </div>
+
+            <table class="tabla-juegos">
+                <thead>
+                    <tr>
+                        <th style="width: 70%;">Nombre del Juego</th>
+                        <th style="width: 15%; text-align: center;">Hecho</th>
+                        <th style="width: 15%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${juegosActuales.map((j, i) => `
+                        <tr class="${j.completado ? 'fila-completada' : ''}">
+                            <td><strong>${j.nombre}</strong></td>
+                            <td style="text-align: center;">
+                                <input type="checkbox" class="check-completado" 
+                                ${j.completado ? 'checked' : ''} 
+                                onchange="toggleJuego(${i})">
+                            </td>
+                            <td style="text-align: right;">
+                                <button onclick="borrarJuego(${i})" style="background:none; border:none; color:#f85149; cursor:pointer;">✖</button>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
         `;
     }
     else {
@@ -132,7 +149,7 @@ function verSeccion(tipo) {
     }
 }
 
-
+// --- 6. FUNCIONES DE ACCIÓN ---
 function añadirTarea() {
     let input = document.getElementById("nuevaTarea");
     if (!input || input.value.trim() === "") return;
@@ -150,10 +167,22 @@ function borrarTarea(i) {
 }
 
 function añadirJuego() {
-    let input = document.getElementById("nuevoJuego");
-    if (!input || input.value.trim() === "") return;
+    let nombreInput = document.getElementById("nuevoJuego");
+    if (!nombreInput || nombreInput.value.trim() === "") return;
+
     let lista = cargarDeDisco('juegos');
-    lista.push(input.value);
+    lista.push({
+        nombre: nombreInput.value,
+        completado: false
+    });
+    
+    guardarEnDisco('juegos', lista);
+    verSeccion('juegos');
+}
+
+function toggleJuego(i) {
+    let lista = cargarDeDisco('juegos');
+    lista[i].completado = !lista[i].completado; 
     guardarEnDisco('juegos', lista);
     verSeccion('juegos');
 }
