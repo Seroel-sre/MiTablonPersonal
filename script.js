@@ -109,12 +109,10 @@ function verSeccion(tipo) {
         // Limpiamos todo el contenido anterior y ponemos el mensaje de deshabilitado
         caja.innerHTML = `
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 300px; text-align: center; border: 1px dashed #30363d; border-radius: 8px; margin-top: 20px;">
-                <div style="font-size: 50px; margin-bottom: 15px;">🚧</div>
-                <h2 style="color: #58a6ff; margin-bottom: 10px; font-size: 24px;">Sección No Habilitada</h2>
                 <p style="color: #8b949e; font-size: 1.1rem; max-width: 80%;">
-                    La biblioteca de juegos está actualmente en mantenimiento y no se encuentra disponible.
+                    La biblioteca de juegos no esta disponible de momento
                 </p>
-                <p style="color: #58a6ff; margin-top: 15px; font-weight: bold; letter-spacing: 1px;">PRÓXIMAMENTE</p>
+                <p style="color: #58a6ff; margin-top: 15px; font-weight: bold; letter-spacing: 1px;">PRÓXIMAMENTE...</p>
             </div>
         `;
     }
