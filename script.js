@@ -1,4 +1,4 @@
-// --- 1. CONFIGURACIÓN INICIAL ---
+// --- 1. CONFIGURACIÓN INICIAL Y VARIABLES ---
 let modoRegistro = false;
 
 window.onload = function() {
@@ -11,19 +11,24 @@ window.onload = function() {
     }
 };
 
-// --- 2. LOGIN Y REGISTRO ---
+// --- 2. GESTIÓN DE INTERFAZ (LOGIN/REGISTRO) ---
 function mostrarLogin() {
     modoRegistro = false;
     document.getElementById("tituloForm").textContent = "Iniciar Sesión";
     document.getElementById("botonAccion").textContent = "Entrar al Sistema";
+    document.querySelectorAll('.btn-tab').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.btn-tab')[0].classList.add('active');
 }
 
 function mostrarRegistro() {
     modoRegistro = true;
     document.getElementById("tituloForm").textContent = "Crear Cuenta Nueva";
     document.getElementById("botonAccion").textContent = "Registrar Usuario";
+    document.querySelectorAll('.btn-tab').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.btn-tab')[1].classList.add('active');
 }
 
+// --- 3. LÓGICA DE ACCESO ---
 function acceder() {
     let userNombre = document.getElementById("usuario").value;
     let userPass = document.getElementById("password").value;
@@ -34,10 +39,12 @@ function acceder() {
         let existe = usuarios.find(u => u.nombre === userNombre);
         if (existe) {
             mensaje.textContent = "Error: El usuario ya existe.";
+        } else if (userNombre.length < 3 || userPass.length < 4) {
+            mensaje.textContent = "Mínimo 3 letras de usuario y 4 de clave.";
         } else {
             usuarios.push({ nombre: userNombre, pass: userPass });
             localStorage.setItem("listaUsuarios", JSON.stringify(usuarios));
-            alert("¡Usuario creado!");
+            alert("¡Usuario creado con éxito! Ya puedes entrar.");
             location.reload(); 
         }
     } else {
@@ -56,13 +63,13 @@ function cerrarSesion() {
     location.reload();
 }
 
-// --- 3. MOTOR DE GUARDADO ---
+// --- 4. MOTOR DE PERSISTENCIA ---
 function guardarEnDisco(seccion, datos) {
     let usuarioActual = localStorage.getItem("usuarioActual");
     if (!usuarioActual) return;
 
     let todosLosDatos = JSON.parse(localStorage.getItem("datos_" + usuarioActual)) || {
-        tareas: [], juegos: [], notas: []
+        tareas: [], juegos: [], notas: [], guardados: []
     };
 
     todosLosDatos[seccion] = datos;
@@ -77,64 +84,60 @@ function cargarDeDisco(seccion) {
     return todosLosDatos[seccion] || [];
 }
 
-// --- 4. NAVEGACIÓN ---
+// --- 5. NAVEGACIÓN Y SECCIONES ---
 function verSeccion(tipo) {
     let caja = document.getElementById("contenidoSeccion");
     
     if (tipo === 'tareas') {
-        let tareas = cargarDeDisco('tareas');
+        let tareasActuales = cargarDeDisco('tareas');
         caja.innerHTML = `
             <h2>✅ Mis Tareas</h2>
-            <div style="display:flex; gap:10px; margin-bottom:20px;">
-                <input type="text" id="nuevaTarea" placeholder="¿Qué hay que hacer?" style="flex:1;">
-                <button onclick="añadirTarea()" class="btn-glow" style="width:100px; margin:0;">Añadir</button>
+            <div style="margin: 15px 0; display: flex; gap: 10px;">
+                <input type="text" id="nuevaTarea" placeholder="¿Qué hay que hacer?" style="flex-grow: 1; padding:10px;">
+                <button onclick="añadirTarea()" class="btn-glow" style="width: 100px; margin: 0;">Añadir</button>
             </div>
-            <ul style="list-style:none; padding:0;">
-                ${tareas.map((t, i) => `
-                    <li style="background:#21262d; padding:10px; margin-bottom:5px; border-radius:5px; display:flex; justify-content:space-between;">
-                        ${t} <button onclick="borrarTarea(${i})" style="color:red; background:none; border:none; cursor:pointer;">✖</button>
+            <ul id="listaTareas" style="list-style: none; padding: 0;">
+                ${tareasActuales.map((t, i) => `
+                    <li style="background: #21262d; margin: 5px 0; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; border: 1px solid #30363d;">
+                        ${t} <button onclick="borrarTarea(${i})" style="background:none; border:none; color:#f85149; cursor:pointer; font-weight:bold;">✖</button>
                     </li>
                 `).join('')}
             </ul>
         `;
     } 
     else if (tipo === 'juegos') {
-        let juegos = cargarDeDisco('juegos');
+        let juegosActuales = cargarDeDisco('juegos');
         caja.innerHTML = `
             <h2>🎮 Mi Biblioteca</h2>
-            <table class="tabla-juegos" style="width:100%; border-collapse:collapse; margin-top:15px;">
-                <thead>
-                    <tr style="background:#21262d;">
-                        <th style="padding:10px;"><input type="text" id="nuevoJuego" placeholder="Juego..." style="width:100%; border:none; background:transparent; color:white;"></th>
-                        <th style="padding:10px; border-left:1px solid #333;"><input type="text" id="espacioLibre" placeholder="Notas..." style="width:100%; border:none; background:transparent; color:white;"></th>
-                        <th style="padding:10px; border-left:1px solid #333; text-align:center;"><button onclick="añadirJuego()" class="btn-glow" style="margin:0; padding:5px 10px;">Añadir</button></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${juegos.map((j, i) => `
-                        <tr class="${j.completado ? 'fila-completada' : ''}" style="border-bottom:1px solid #333;">
-                            <td style="padding:10px;">${j.nombre}</td>
-                            <td style="padding:10px; border-left:1px solid #333; color:#8b949e;">${j.extra || ''}</td>
-                            <td style="padding:10px; border-left:1px solid #333; text-align:center;">
-                                <input type="checkbox" ${j.completado ? 'checked' : ''} onchange="toggleJuego(${i})">
-                                <button onclick="borrarJuego(${i})" style="color:red; background:none; border:none; margin-left:10px; cursor:pointer;">✖</button>
-                            </td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
+            <div style="margin: 15px 0; display: flex; gap: 10px;">
+                <input type="text" id="nuevoJuego" placeholder="Nombre del juego..." style="flex-grow: 1; padding:10px;">
+                <button onclick="añadirJuego()" class="btn-glow" style="width: 100px; margin: 0;">Añadir</button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px;">
+                ${juegosActuales.map((j, i) => `
+                    <div style="background: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #30363d; text-align: center; position: relative;">
+                        <span style="font-size: 30px;">🕹️</span>
+                        <p style="margin-top: 8px; font-size: 14px;">${j}</p>
+                        <button onclick="borrarJuego(${i})" style="position: absolute; top: 5px; right: 5px; background:none; border:none; color:#f85149; cursor:pointer;">✖</button>
+                    </div>
+                `).join('')}
+            </div>
         `;
-    } else {
-        caja.innerHTML = `<h2>Bienvenido</h2><p>Selecciona una sección para empezar.</p>`;
+    }
+    else {
+        caja.innerHTML = `
+            <h2>Panel de Control</h2>
+            <p>Selecciona una categoría para empezar a organizar tu vida.</p>
+        `;
     }
 }
 
-// --- 5. FUNCIONES DE LOS BOTONES ---
+// --- 6. FUNCIONES DE ACCIÓN ---
 function añadirTarea() {
-    let val = document.getElementById("nuevaTarea").value;
-    if (!val) return;
+    let input = document.getElementById("nuevaTarea");
+    if (!input || input.value.trim() === "") return;
     let lista = cargarDeDisco('tareas');
-    lista.push(val);
+    lista.push(input.value);
     guardarEnDisco('tareas', lista);
     verSeccion('tareas');
 }
@@ -147,18 +150,10 @@ function borrarTarea(i) {
 }
 
 function añadirJuego() {
-    let nom = document.getElementById("nuevoJuego").value;
-    let ext = document.getElementById("espacioLibre").value;
-    if (!nom) return;
+    let input = document.getElementById("nuevoJuego");
+    if (!input || input.value.trim() === "") return;
     let lista = cargarDeDisco('juegos');
-    lista.push({ nombre: nom, extra: ext, completado: false });
-    guardarEnDisco('juegos', lista);
-    verSeccion('juegos');
-}
-
-function toggleJuego(i) {
-    let lista = cargarDeDisco('juegos');
-    lista[i].completado = !lista[i].completado;
+    lista.push(input.value);
     guardarEnDisco('juegos', lista);
     verSeccion('juegos');
 }
