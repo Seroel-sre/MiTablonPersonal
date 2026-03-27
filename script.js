@@ -1,4 +1,4 @@
-// --- 1. CONFIGURACIÓN INICIAL Y VARIABLES ---
+
 let modoRegistro = false;
 
 window.onload = function() {
@@ -11,7 +11,7 @@ window.onload = function() {
     }
 };
 
-// --- 2. GESTIÓN DE INTERFAZ (LOGIN/REGISTRO) ---
+
 function mostrarLogin() {
     modoRegistro = false;
     document.getElementById("tituloForm").textContent = "Iniciar Sesión";
@@ -28,7 +28,7 @@ function mostrarRegistro() {
     document.querySelectorAll('.btn-tab')[1].classList.add('active');
 }
 
-// --- 3. LÓGICA DE ACCESO ---
+
 function acceder() {
     let userNombre = document.getElementById("usuario").value;
     let userPass = document.getElementById("password").value;
@@ -63,7 +63,7 @@ function cerrarSesion() {
     location.reload();
 }
 
-// --- 4. MOTOR DE PERSISTENCIA ---
+
 function guardarEnDisco(seccion, datos) {
     let usuarioActual = localStorage.getItem("usuarioActual");
     if (!usuarioActual) return;
@@ -84,7 +84,7 @@ function cargarDeDisco(seccion) {
     return todosLosDatos[seccion] || [];
 }
 
-// --- 5. NAVEGACIÓN Y SECCIONES ---
+
 function verSeccion(tipo) {
     let caja = document.getElementById("contenidoSeccion");
     
@@ -132,7 +132,7 @@ function verSeccion(tipo) {
     }
 }
 
-// --- 6. FUNCIONES DE ACCIÓN ---
+
 function añadirTarea() {
     let input = document.getElementById("nuevaTarea");
     if (!input || input.value.trim() === "") return;
