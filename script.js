@@ -73,7 +73,7 @@ function guardarEnDisco(seccion, datos) {
     };
 
     todosLosDatos[seccion] = datos;
-    localStorage.setItem("datos_" + usuarioActual, JSON.stringify(todosLos_Datos));
+    localStorage.setItem("datos_" + usuarioActual, JSON.stringify(todosLosDatos));
 }
 
 function cargarDeDisco(seccion) {
@@ -110,30 +110,36 @@ function verSeccion(tipo) {
         caja.innerHTML = `
             <h2>🎮 Mi Biblioteca de Juegos</h2>
             
-            <div style="display: flex; gap: 10px; margin: 15px 0;">
-                <input type="text" id="nuevoJuego" placeholder="Nombre del juego..." style="flex-grow: 1; padding:10px; margin:0;">
-                <button onclick="añadirJuego()" class="btn-glow" style="width: 100px; margin: 0; padding: 10px;">Añadir</button>
-            </div>
-
-            <table class="tabla-juegos">
+            <table class="tabla-juegos" style="margin-top: 20px;">
                 <thead>
-                    <tr>
-                        <th style="width: 70%;">Nombre del Juego</th>
-                        <th style="width: 15%; text-align: center;">Hecho</th>
-                        <th style="width: 15%;"></th>
+                    <tr style="background-color: #21262d;">
+                        <th style="width: 40%; padding: 5px;">
+                            <input type="text" id="nuevoJuego" placeholder="Nombre del juego..." 
+                                style="margin: 0; border: none; background: transparent; padding: 10px; width: 100%;">
+                        </th>
+                        <th style="width: 40%; border-left: 1px solid #30363d; padding: 5px;">
+                            <input type="text" id="espacioLibre" placeholder="Escribe lo que quieras..." 
+                                style="margin: 0; border: none; background: transparent; padding: 10px; width: 100%;">
+                        </th>
+                        <th style="width: 20%; border-left: 1px solid #30363d; text-align: center;">
+                            <button onclick="añadirJuego()" class="btn-glow" 
+                                style="margin: 0; width: 90%; padding: 8px; font-size: 12px;">Añadir</button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     ${juegosActuales.map((j, i) => `
                         <tr class="${j.completado ? 'fila-completada' : ''}">
-                            <td><strong>${j.nombre}</strong></td>
-                            <td style="text-align: center;">
+                            <td style="padding: 15px;"><strong>${j.nombre}</strong></td>
+                            <td style="border-left: 1px solid #30363d; color: #8b949e; padding: 15px;">
+                                ${j.extra || ''}
+                            </td>
+                            <td style="border-left: 1px solid #30363d; text-align: center;">
                                 <input type="checkbox" class="check-completado" 
                                 ${j.completado ? 'checked' : ''} 
                                 onchange="toggleJuego(${i})">
-                            </td>
-                            <td style="text-align: right;">
-                                <button onclick="borrarJuego(${i})" style="background:none; border:none; color:#f85149; cursor:pointer;">✖</button>
+                                <button onclick="borrarJuego(${i})" 
+                                    style="background:none; border:none; color:#f85149; cursor:pointer; margin-left: 10px;">✖</button>
                             </td>
                         </tr>
                     `).join('')}
@@ -147,7 +153,7 @@ function verSeccion(tipo) {
             <p>Selecciona una categoría para empezar a organizar tu vida.</p>
         `;
     }
-}
+} // <--- ESTA LLAVE FALTABA AQUÍ
 
 // --- 6. FUNCIONES DE ACCIÓN ---
 function añadirTarea() {
@@ -168,11 +174,14 @@ function borrarTarea(i) {
 
 function añadirJuego() {
     let nombreInput = document.getElementById("nuevoJuego");
+    let extraInput = document.getElementById("espacioLibre");
+    
     if (!nombreInput || nombreInput.value.trim() === "") return;
 
     let lista = cargarDeDisco('juegos');
     lista.push({
         nombre: nombreInput.value,
+        extra: extraInput.value,
         completado: false
     });
     
