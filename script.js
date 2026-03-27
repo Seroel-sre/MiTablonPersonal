@@ -106,24 +106,19 @@ function verSeccion(tipo) {
         `;
     } 
     else if (tipo === 'juegos') {
-        let juegosActuales = cargarDeDisco('juegos');
+        // Limpiamos todo el contenido anterior y ponemos el mensaje de deshabilitado
         caja.innerHTML = `
-            <h2>🎮 Mi Biblioteca</h2>
-            <div style="margin: 15px 0; display: flex; gap: 10px;">
-                <input type="text" id="nuevoJuego" placeholder="Nombre del juego..." style="flex-grow: 1; padding:10px;">
-                <button onclick="añadirJuego()" class="btn-glow" style="width: 100px; margin: 0;">Añadir</button>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px;">
-                ${juegosActuales.map((j, i) => `
-                    <div style="background: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #30363d; text-align: center; position: relative;">
-                        <span style="font-size: 30px;">🕹️</span>
-                        <p style="margin-top: 8px; font-size: 14px;">${j}</p>
-                        <button onclick="borrarJuego(${i})" style="position: absolute; top: 5px; right: 5px; background:none; border:none; color:#f85149; cursor:pointer;">✖</button>
-                    </div>
-                `).join('')}
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 300px; text-align: center; border: 1px dashed #30363d; border-radius: 8px; margin-top: 20px;">
+                <div style="font-size: 50px; margin-bottom: 15px;">🚧</div>
+                <h2 style="color: #58a6ff; margin-bottom: 10px; font-size: 24px;">Sección No Habilitada</h2>
+                <p style="color: #8b949e; font-size: 1.1rem; max-width: 80%;">
+                    La biblioteca de juegos está actualmente en mantenimiento y no se encuentra disponible.
+                </p>
+                <p style="color: #58a6ff; margin-top: 15px; font-weight: bold; letter-spacing: 1px;">PRÓXIMAMENTE</p>
             </div>
         `;
     }
+    
     else {
         caja.innerHTML = `
             <h2>Panel de Control</h2>
