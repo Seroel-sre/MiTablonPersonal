@@ -1,6 +1,7 @@
 // --- 1. CONFIGURACIÓN INICIAL Y VARIABLES ---
 let modoRegistro = false;
 
+// Al cargar la página, comprobamos si ya había un usuario logueado
 window.onload = function() {
     let usuarioGuardado = localStorage.getItem("usuarioActual");
     if (usuarioGuardado) {
@@ -50,8 +51,8 @@ function acceder() {
     } else {
         let usuarioEncontrado = usuarios.find(u => u.nombre === userNombre && u.pass === userPass);
         if (usuarioEncontrado) {
-            localStorage.setItem("usuarioActual", userNombre);
-            location.reload();
+            localStorage.setItem("usuarioActual", userNombre); // Guardado permanente
+            location.reload(); // Recargamos para que window.onload haga su magia
         } else {
             mensaje.textContent = "Usuario o contraseña incorrectos.";
         }
@@ -63,7 +64,7 @@ function cerrarSesion() {
     location.reload();
 }
 
-// --- 4. MOTOR DE PERSISTENCIA ---
+// --- 4. MOTOR DE PERSISTENCIA (EL CORAZÓN DEL AUTOGUARDADO) ---
 function guardarEnDisco(seccion, datos) {
     let usuarioActual = localStorage.getItem("usuarioActual");
     if (!usuarioActual) return;
@@ -125,17 +126,14 @@ function verSeccion(tipo) {
         `;
     }
     else {
-        caja.innerHTML = `
-            <h2>Panel de Control</h2>
-            <p>Selecciona una categoría para empezar a organizar tu vida.</p>
-        `;
+        caja.innerHTML = `<h2>Bienvenido</h2><p>Selecciona una categoría para empezar a organizar tu vida gamer.</p>`;
     }
 }
 
-// --- 6. FUNCIONES DE ACCIÓN ---
+// --- 6. FUNCIONES DE ACCIÓN (TAREAS Y JUEGOS) ---
 function añadirTarea() {
     let input = document.getElementById("nuevaTarea");
-    if (!input || input.value.trim() === "") return;
+    if (input.value.trim() === "") return;
     let lista = cargarDeDisco('tareas');
     lista.push(input.value);
     guardarEnDisco('tareas', lista);
@@ -151,7 +149,7 @@ function borrarTarea(i) {
 
 function añadirJuego() {
     let input = document.getElementById("nuevoJuego");
-    if (!input || input.value.trim() === "") return;
+    if (input.value.trim() === "") return;
     let lista = cargarDeDisco('juegos');
     lista.push(input.value);
     guardarEnDisco('juegos', lista);
